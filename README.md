@@ -19,6 +19,8 @@ A implementaion of depth generation based on [PRNet](https://github.com/YadiraF/
 * opencv2 (for showing results)
 
 * Download the PRN trained model at [BaiduDrive](https://pan.baidu.com/s/10vuV7m00OHLcsihaC-Adsw) or [GoogleDrive](https://drive.google.com/file/d/1UoE-XuW1SDLUjZmJPkIZ1MLxvQFgmTFH/view?usp=sharing), and put it into `Data/net-data`
+(Attention!! The tf model file on GoogleDrive has missed the .index file. The .index file can be download from the PRNet:/Data/net-data/: https://github.com/YadiraF/PRNet/tree/master/Data)
+
 
 ## Test
 
