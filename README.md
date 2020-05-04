@@ -10,7 +10,7 @@ A implementaion of depth generation based on [PRNet](https://github.com/YadiraF/
 
 * Python 3.6 (numpy, skimage, scipy)
 
-* TensorFlow >= 1.4
+* TensorFlow == 1.4 (cuda 8.0) or Tensorflow >=1.5 (cuda 9.0)
 
   Optional:
 
