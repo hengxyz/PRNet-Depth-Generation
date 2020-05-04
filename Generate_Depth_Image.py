@@ -11,12 +11,15 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 prn = PRN(is_dlib = True, is_opencv = False) 
 
-path_image = './TestImages/0.jpg'
+path_image = './TestImages/2.jpg'
 
 image = imread(path_image)
 image_shape = [image.shape[0], image.shape[1]]
 
 pos = prn.process(image, None, None, image_shape)
+if pos is None:
+    depth_scene_map = np.zeros(image_shape)
+    cv2.imwrite('./2_depth.jpg', depth_scene_map)
 
 kpt = prn.get_landmarks(pos)
 

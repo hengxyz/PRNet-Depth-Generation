@@ -39,7 +39,18 @@ for sub in subjects:
 
             image_shape = [image.shape[0], image.shape[1]]
 
-            pos = prn.process(image, None, None, image_shape)
+            pos, bbox = prn.process(image, None, None, image_shape)
+            with open(os.path.join(depth_vid, '%04d_bbox.txt' % frameCnt), 'wt') as  f:
+                for pt in bbox:
+                    f.write("".join("%d"%pt) + " ")
+            if pos is None:
+                depth_scene_map = np.zeros(image_shape)
+                kpt = np.zeros(68,3)
+                cv2.imwrite(os.path.join(depth_vid, '%04d.jpg' % frameCnt), depth_scene_map)
+                with open(os.path.join(depth_vid, '%04d_landmarks.txt' % frameCnt), 'wt') as  f:
+                    for line in kpt:
+                        f.write("".join("%f %f %f" % (line[0], line[1], line[2])) + "\n")
+                continue;
 
             kpt = prn.get_landmarks(pos)
 
@@ -53,5 +64,7 @@ for sub in subjects:
             # cv2.waitKey(0)
 
             cv2.imwrite(os.path.join(depth_vid, '%04d.jpg'%frameCnt), depth_scene_map)
-
+            with open(os.path.join(depth_vid, '%04d_landmarks.txt' % frameCnt), 'wt') as  f:
+                for line in kpt:
+                    f.write("".join("%f %f %f"%(line[0], line[1], line[2])) + "\n")
             frameCnt += 1

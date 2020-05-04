@@ -155,7 +155,7 @@ class PRN:
         vertices = np.vstack((vertices[:2,:], z))
         pos = np.reshape(vertices.T, [self.resolution_op, self.resolution_op, 3])
         
-        return pos
+        return pos, [left, right, top, bottom]
             
     def get_landmarks(self, pos):
         '''
