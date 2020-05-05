@@ -65,12 +65,13 @@ class PRN:
         Returns:
             pos: the 3D position map. (256, 256, 3).
         '''
+
         if isinstance(input, str):
             try:
                 image = imread(input)
             except IOError:
                 print("error opening file: ", input)
-                return None
+                return None, None
         else:
             image = input
 
@@ -117,7 +118,7 @@ class PRN:
             detected_faces = self.dlib_detect(image)
             if len(detected_faces) == 0:
                 print('warning: no detected face')
-                return None
+                return None, None
 
             d = detected_faces[0].rect ## only use the first detected face (assume that each input image only contains one face)
             left = d.left(); right = d.right(); top = d.top(); bottom = d.bottom()

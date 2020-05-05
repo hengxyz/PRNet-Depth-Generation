@@ -23,6 +23,7 @@ for sub in subjects:
     videos = glob.glob(os.path.join(path_vids, sub, '*.mov'))
     videos.sort()
     for video in videos:
+        print ("%s"%video)
         vid_name = str.split(video, '/')[-1]
         depth_vid = os.path.join(path_depth, sub, vid_name[:-4])
         if not os.path.isdir(depth_vid):
@@ -32,6 +33,9 @@ for sub in subjects:
         frameCnt = 0
         while(True):
             ret, image = cap.read()
+            # if frameCnt < 547:
+            #     frameCnt += 1
+            #     continue
             if ret == False:
                 break
 
@@ -40,17 +44,26 @@ for sub in subjects:
             image_shape = [image.shape[0], image.shape[1]]
 
             pos, bbox = prn.process(image, None, None, image_shape)
+
             with open(os.path.join(depth_vid, '%04d_bbox.txt' % frameCnt), 'wt') as  f:
-                for pt in bbox:
-                    f.write("".join("%d"%pt) + " ")
-            if pos is None:
-                depth_scene_map = np.zeros(image_shape)
-                kpt = np.zeros(68,3)
-                cv2.imwrite(os.path.join(depth_vid, '%04d.jpg' % frameCnt), depth_scene_map)
-                with open(os.path.join(depth_vid, '%04d_landmarks.txt' % frameCnt), 'wt') as  f:
-                    for line in kpt:
-                        f.write("".join("%f %f %f" % (line[0], line[1], line[2])) + "\n")
-                continue;
+                if  bbox is None:
+                    print('No face is detected!++++++++++++++++++++++++++++++++++++++++++++')
+                    f.write("0 0 0 0")
+                    depth_scene_map = np.zeros(image_shape)
+                    kpt = np.zeros([68, 3])
+                    cv2.imwrite(os.path.join(depth_vid, '%04d.jpg' % frameCnt), depth_scene_map)
+                    with open(os.path.join(depth_vid, '%04d_landmarks.txt' % frameCnt), 'wt') as  f:
+                        for line in kpt:
+                            f.write("".join("%f %f %f" % (line[0], line[1], line[2])) + "\n")
+
+                    frameCnt += 1
+                    continue;
+
+
+                else:
+                    for pt in bbox:
+                        f.write("".join("%d"%pt) + " ")
+
 
             kpt = prn.get_landmarks(pos)
 
